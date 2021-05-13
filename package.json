@@ -15,6 +15,9 @@
     "postdeploy": "npm run migrate:production"
   },
   "keywords": [],
+  "engines": {
+    "node":"14.15.1"
+  },
   "author": "Eric Riley",
   "license": "ISC",
   "dependencies": {
