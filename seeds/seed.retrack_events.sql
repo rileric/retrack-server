@@ -1,6 +1,6 @@
-INSERT INTO retrack_events (event_name, event_type, relevant_date)
+INSERT INTO retrack_events (event_name, event_type, relevant_date, event_owner_id)
 VALUES
-    ('Past Date Game', 'Game', '2020-13-01'),
-    ('Current Date Video', 'Video', now() ),
-    ('No Date Other', 'Other', ),
-    ('Future Date No-type',, '2022-13-01')
+    ('Past Date Game', 'Game', '2020-01-13', '1'),
+    ('Current Date Movie', 'Movie', now(), '1' ),
+    ('No Date Other default time', 'Other', DEFAULT, '1'),
+    ('Future Date No-type', DEFAULT, '2022-01-13', '1');
