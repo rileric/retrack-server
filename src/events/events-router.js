@@ -62,7 +62,7 @@ eventRouter
         .then(event => {
             if(!event) {
                 return res.status(404).json({
-                    error: {message: `Event doesn't exist`}
+                    error: {message: `Event not found`}
                 });
             }
             res.event = event; 

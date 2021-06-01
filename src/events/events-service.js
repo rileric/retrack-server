@@ -1,7 +1,8 @@
 const EventsService = {
 
     getAllEvents(knex) {
-        return knex.select('*').from('retrack_events');
+        let test = knex.select('*').from('retrack_events');
+        return test;
     },
 
     insertEvent(knex, newEvent) {
