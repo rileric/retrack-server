@@ -31,7 +31,7 @@ timelineRouter
     })
     .post(jsonParser, (req,res,next) => {
         const {timeline_name, tl_owner_id} = req.body;
-        const newTimeline = {timeline_name, tl_owner_id}; // useful when adding future enhancements
+        const newTimeline = {timeline_name, tl_owner_id}; 
 
         for( const [key,value] of Object.entries(newTimeline)) {
             if(value == null) {
@@ -77,6 +77,10 @@ timelineRouter
     })
     .delete((req,res,next) => {
         TimelinesService.deleteTimeline(
+            req.app.get('db'),
+            req.params.timeline_id
+        )
+        TimelinesService.deleteTimelineAllEvents(
             req.app.get('db'),
             req.params.timeline_id
         )

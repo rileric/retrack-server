@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const xss = require('xss');
 const EventsService = require('./events-service');
+const TimelinesService = require('../timelines/timelines-service');
 
 const eventRouter = express.Router();
 const jsonParser = express.json();
@@ -77,6 +78,10 @@ eventRouter
 
     .delete((req,res,next) => {
         EventsService.deleteEvent(
+            req.app.get('db'),
+            req.params.event_id
+        )
+        TimelinesService.deleteAllTimelineEventsWithEvent(
             req.app.get('db'),
             req.params.event_id
         )

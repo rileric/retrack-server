@@ -23,10 +23,8 @@ describe('Retrack Endpoints', () => {
 
   after('disconnect from db', () => db.destroy() );
 
-  // before('cleanup', () => db('retrack_events_timelines_bridge','retrack_timelines','retrack_events').truncate() );
   before('cleanup raw', () => db.raw('TRUNCATE TABLE retrack_events_timelines_bridge, retrack_timelines, retrack_events CASCADE') );
-  
-  // afterEach('cleanup', () => db('retrack_events_timelines_bridge','retrack_timelines','retrack_events').truncate() );
+
   afterEach('cleanup raw', () => db.raw('TRUNCATE TABLE retrack_events_timelines_bridge, retrack_timelines, retrack_events CASCADE') );
 
 
@@ -111,7 +109,33 @@ describe('POST /events', () => {
       })
     })
   });
-  // DELETE /events/:event_id====NOT ADDED YET====
+
+  describe('DELETE /events/:event_id', () => {
+    context('Given no events', () => {
+      it('responds with 404', () => {
+        return supertest(app)
+          .delete('/events/111')
+          .expect(404);
+      })
+    })
+
+    context('Given there are events in the database', () => {
+      const testEvents = fixtures.makeEventsArray();
+
+      beforeEach('insert events', () => {
+        return db
+          .into('retrack_events')
+          .insert(testEvents);
+      })
+
+      it('deletes the event', () => {
+        return supertest(app)
+          .delete('/events/10')
+          .expect(204);
+      })
+    })
+
+  })
 
   describe('GET /timelines', () => {
     context('Given no timelines', () => {
@@ -138,7 +162,7 @@ describe('POST /events', () => {
       })
     })
   });
-  // POST /timelines
+
   describe('POST /timelines', () => {
     it('adds a new timeline to the database', () => {
       const newTimeline = {
@@ -192,9 +216,48 @@ describe('POST /events', () => {
       })
     })
   });
-  // DELETE /timelines/:timeline_id====NOT ADDED YET====
 
-  // POST /timelines/:timeline_id/timelineEvents
+  describe('DELETE /timelines/:timeline_id', () => {
+    context('Given no timelines', () => {
+      it('responds with 204', () => {
+        return supertest(app)
+          .delete('/timelines/111')
+          .expect(204);
+      })
+    })
+
+    context('Given there are timelines in the database', () => {
+      const testTimelines = fixtures.makeTimelinesArray();
+      const testEvents = fixtures.makeEventsArray();
+      const testTimelineEvents = fixtures.makeTimelineEventsArray();
+
+      beforeEach('insert events', () => {
+        return db
+          .into('retrack_events')
+          .insert(testEvents);
+      })
+
+      beforeEach('insert timelines', () => {
+        return db
+          .into('retrack_timelines')
+          .insert(testTimelines);
+      })
+
+      beforeEach('insert timelineEvents', () => {
+        return db
+          .into('retrack_events_timelines_bridge')
+          .insert(testTimelineEvents);
+      })
+
+      it('deletes the timeline', () => {
+        return supertest(app)
+          .delete('/timelines/11')
+          .expect(204);
+      })
+    })
+
+  })
+
   describe('POST /timelines/:timeline_id/timelineEvents', () => {
 
     const testTimelines = fixtures.makeTimelinesArray();
@@ -227,6 +290,46 @@ describe('POST /events', () => {
         })
     })
   });
-  // DELETE /timelines/:timeline_id/timelineEvents/:event_id====NOT ADDED YET====
+
+  describe('DELETE /timelines/:timeline_id', () => {
+    context('Given no timelineEvents', () => {
+      it('responds with 204', () => {
+        return supertest(app)
+          .delete('/timelines/111/timelineEvents/111')
+          .expect(204);
+      })
+    })
+
+    context('Given there are timelineEvents in the database', () => {
+      const testTimelines = fixtures.makeTimelinesArray();
+      const testEvents = fixtures.makeEventsArray();
+      const testTimelineEvents = fixtures.makeTimelineEventsArray();
+
+      beforeEach('insert events', () => {
+        return db
+          .into('retrack_events')
+          .insert(testEvents);
+      })
+
+      beforeEach('insert timelines', () => {
+        return db
+          .into('retrack_timelines')
+          .insert(testTimelines);
+      })
+
+      beforeEach('insert timelineEvents', () => {
+        return db
+          .into('retrack_events_timelines_bridge')
+          .insert(testTimelineEvents);
+      })
+
+      it('deletes the timelineEvent', () => {
+        return supertest(app)
+          .delete('/timelines/11/timelineEvents/11')
+          .expect(204);
+      })
+    })
+
+  })
   
 });

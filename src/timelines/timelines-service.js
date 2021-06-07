@@ -57,6 +57,24 @@ const TimelinesService = {
                 event_id: event_id
             })
             .delete();
+    },
+
+    deleteTimelineAllEvents(knex, timeline_id) {
+        return knex
+            .from(`${bridgeTable}`)
+            .where({
+                timeline_id: timeline_id,
+            })
+            .delete();
+    },
+
+    deleteAllTimelineEventsWithEvent(knex, event_id) {
+        return knex
+            .from(`${bridgeTable}`)
+            .where({
+                event_id: event_id,
+            })
+            .delete();
     }
 };
 
