@@ -5,7 +5,9 @@ const eventsTable = 'retrack_events';
 const TimelinesService = {
 
     getAllTimelines(knex) {
-        return knex.select('*').from(`${timelinesTable}`);
+        return knex
+            .select('*')
+            .from(`${timelinesTable}`);
     },
 
     insertTimeline(knex, newTimeline) {
@@ -35,7 +37,8 @@ const TimelinesService = {
     getAllTimelineEvents(knex) {
         return knex
             .from(`${bridgeTable}`)
-            .innerJoin(`${eventsTable}`, `${bridgeTable}.event_id`, `${eventsTable}.event_id`);
+            .innerJoin(`${eventsTable}`, `${bridgeTable}.event_id`, `${eventsTable}.event_id`)
+            .orderBy('relevant_date', 'asc');
 
     },
 
